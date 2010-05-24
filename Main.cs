@@ -41,7 +41,7 @@ namespace Test
 					Console.WriteLine("elapsed: {0}", sw.ElapsedMilliseconds);
 					Console.WriteLine();
 
-					Thread.Sleep(1000);
+					Thread.Sleep(100);
 				}
 			}
 			catch (Exception ex)
