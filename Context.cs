@@ -9,7 +9,19 @@ namespace Spica.Data.Groonga
 	public class GroongaException : Exception
 	{
 		public GroongaResultCode Result { get; private set; }
-		public GroongaException(GroongaResultCode result)
+
+		public GroongaException(GroongaResultCode result) 		{
+			Result = result; 
+		}
+
+		public GroongaException(GroongaResultCode result, String message)
+			: base(message) 
+		{
+			Result = result; 
+		}
+
+		public GroongaException(GroongaResultCode result, String message, Exception inner)
+			: base(message, inner)
 		{
 			Result = result;
 		}
@@ -43,7 +55,7 @@ namespace Spica.Data.Groonga
 		{
 			GroongaResultCode result = GroongaApi.grn_ctx_init(out _context, flags);
 			if (result != GroongaResultCode.Success)
-				throw new GroongaException(result);
+				throw new GroongaException(result, "failed: init context");
 		}
 
 		public void Dispose()
@@ -55,9 +67,11 @@ namespace Spica.Data.Groonga
 			}
 		}
 
-		public GroongaResultCode Connect(String host, Int32 port)
+		public void Connect(String host, Int32 port)
 		{
-			return GroongaApi.grn_ctx_connect(ref _context, host, port, 0);
+			GroongaResultCode result = GroongaApi.grn_ctx_connect(ref _context, host, port, 0);
+			if (result != GroongaResultCode.Success)
+				throw new GroongaException(result, "failed: connect");
 		}
 
 		public void Send(String str)
@@ -69,7 +83,7 @@ namespace Spica.Data.Groonga
 		{
 			GroongaApi.grn_ctx_send(ref _context, str, (UInt32)str.Length, flags);
 			if (_context.rc != GroongaResultCode.Success)
-				throw new GroongaException(_context.rc);
+				throw new GroongaException(_context.rc, "failed: send");
 		}
 
 		public String Recv()
@@ -82,7 +96,7 @@ namespace Spica.Data.Groonga
 			do {
 				GroongaApi.grn_ctx_recv(ref _context, out str, out str_len, out flags);
 				if (_context.rc != GroongaResultCode.Success)
-					throw new GroongaException(_context.rc);
+					throw new GroongaException(_context.rc, "failed: recv");
 				sb.Append(Marshal.PtrToStringAnsi(str));
 			} while ((flags & GroongaApi.GRN_CTX_MORE) != 0);
 
