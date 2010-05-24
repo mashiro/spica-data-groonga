@@ -18,74 +18,33 @@ namespace Spica.Data.Groonga
 		public const Int32 GRN_CTX_QUIT  = (0x01<<4);
 
 		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
-		public unsafe struct grn_user_data
+		public struct grn_user_data
 		{
-			[FieldOffset(0)]
-			public Int32 int_value;
-
-			[FieldOffset(0)]
-			public UInt32 id;
-
-			[FieldOffset(0)]
-			public void* ptr;
+			[FieldOffset(0)] public Int32 int_value;
+			[FieldOffset(0)] public UInt32 id;
+			[FieldOffset(0)] public IntPtr ptr;
 		}
 
-		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public unsafe struct grn_ctx
 		{
-
-			[FieldOffset(0)]
 			public GroongaResultCode rc;
-
-			[FieldOffset(4)]
 			public Int32 flags;
-
-			[FieldOffset(8)]
 			public GroongaEncoding encoding;
-
-			[FieldOffset(12)]
 			public Byte ntrace;
-
-			[FieldOffset(13)]
 			public Byte errlvl;
-
-			[FieldOffset(14)]
 			public Byte stat;
-
-			[FieldOffset(15)]
 			public UInt32 seqno;
-
-			[FieldOffset(19)]
 			public UInt32 subno;
-
-			[FieldOffset(23)]
 			public UInt32 seqno2;
-
-			[FieldOffset(27)]
 			public UInt32 errline;
-
-			[FieldOffset(31)]
 			public grn_user_data user_data;
-
-			[FieldOffset(35)]
-			public grn_ctx* prev;
-
-			[FieldOffset(39)]
-			public grn_ctx* next;
-
-			[FieldOffset(43)]
-			public SByte* errfile;
-
-			[FieldOffset(47)]
-			public SByte* errfunc;
-
-			[FieldOffset(51)]
-			public void* impl;
-
-			[FieldOffset(55)]
-			public fixed int trace[16];
-
-			[FieldOffset(119)]
+			public IntPtr prev;
+			public IntPtr next;
+			public IntPtr errfile;
+			public IntPtr errfunc;
+			public IntPtr impl;
+			public fixed Int32 trace[16];
 			public fixed SByte errbuf[GRN_CTX_MSGSIZE];
 		}
 
