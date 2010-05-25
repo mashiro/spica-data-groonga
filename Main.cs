@@ -5,10 +5,23 @@ using System.Text;
 using System.Threading;
 using System.Diagnostics;
 
+using System.Xml;
+using System.Xml.Linq;
+
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+
 namespace Test
 {
 	class Program
 	{
+		public static XElement JsonToXElement(String json)
+		{
+			using (var jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(json), XmlDictionaryReaderQuotas.Max))
+				return XElement.Load(jsonReader);
+		}
+
 		static void Main(string[] args)
 		{
 			const String host = "localhost";
@@ -36,7 +49,7 @@ namespace Test
 					Console.WriteLine("send: {0}", sendData);
 
 					String recvData = context.Recv();
-					Console.WriteLine("recv: {0}", recvData);
+					Console.WriteLine("recv: {0}", JsonToXElement(recvData));
 
 					Console.WriteLine("elapsed: {0}", sw.ElapsedMilliseconds);
 					Console.WriteLine();
