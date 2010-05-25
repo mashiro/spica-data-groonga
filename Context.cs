@@ -97,7 +97,7 @@ namespace Spica.Data.Groonga
 				GroongaApi.grn_ctx_recv(ref _context, out str, out str_len, out flags);
 				if (_context.rc != GroongaResultCode.Success)
 					throw new GroongaException(_context.rc, "failed: recv");
-				sb.Append(Marshal.PtrToStringAnsi(str));
+				sb.Append(Marshal.PtrToStringAnsi(str, (Int32)str_len));
 			} while ((flags & GroongaApi.GRN_CTX_MORE) != 0);
 
 			return sb.ToString();
