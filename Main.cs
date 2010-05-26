@@ -12,10 +12,23 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
+using Spica.Data.Groonga;
+
 namespace Test
 {
 	class Program
 	{
+		public static IEnumerable<String> EnumerateInputs()
+		{
+			while (true)
+			{
+				Console.Write("> ");
+				var input = Console.ReadLine();
+				if (input == null) break;
+				yield return input;
+			}
+		}
+
 		public static XElement JsonToXElement(String json)
 		{
 			using (var jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(json), XmlDictionaryReaderQuotas.Max))
@@ -24,42 +37,29 @@ namespace Test
 
 		static void Main(string[] args)
 		{
-			const String host = "localhost";
-			const Int32 port = 10041;
+			if (args.Length != 2)
+			{
+				Console.WriteLine("sdg.exe host port");
+				return;
+			}
+
+			var host = args[0];
+			var port = Int32.Parse(args[1]);
 
 			try
 			{
-				Console.WriteLine("start");
-
-				Spica.Data.Groonga.GroongaContext context = new Spica.Data.Groonga.GroongaContext();
-				Console.WriteLine("create context");
-
+				var context = new GroongaContext();
 				context.Connect(host, port);
-				Console.WriteLine("connect");
 
-				Console.WriteLine();
-
-				for (int i = 0; i < 10; ++i)
+				foreach (var input in EnumerateInputs())
 				{
-					Console.WriteLine("try: {0}", i);
-
-					Stopwatch sw = Stopwatch.StartNew();
-					String sendData = "status";
-					context.Send(sendData);
-					Console.WriteLine("send: {0}", sendData);
-
-					String recvData = context.Recv();
-					Console.WriteLine("recv: {0}", JsonToXElement(recvData));
-
-					Console.WriteLine("elapsed: {0}", sw.ElapsedMilliseconds);
-					Console.WriteLine();
-
-					Thread.Sleep(100);
+					context.Send(input);
+					var recvData = context.Recv();
+					Console.WriteLine(recvData);
 				}
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine("error");
 				Console.WriteLine(ex.Message);
 				Console.WriteLine(ex.StackTrace);
 			}
