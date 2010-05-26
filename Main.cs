@@ -43,11 +43,11 @@ namespace Test
 				return;
 			}
 
-			var host = args[0];
-			var port = Int32.Parse(args[1]);
-
 			try
 			{
+				var host = args[0];
+				var port = Int32.Parse(args[1]);
+
 				var context = new GroongaContext();
 				context.Connect(host, port);
 
