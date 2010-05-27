@@ -1,10 +1,10 @@
 DLL = Spica.Data.Groonga.dll
 EXE = sdg.exe
-OPT = -r:System.Xml.Linq.dll -r:System.ServiceModel.Web.dll -r:System.Runtime.Serialization.dll
+OPT = -unsafe -r:System.Xml.Linq.dll -r:System.ServiceModel.Web.dll -r:System.Runtime.Serialization.dll
 SRC = Context.cs Api.cs Enum.cs
 
 all:
-	gmcs -unsafe -out:$(EXE) $(OPT) Main.cs $(SRC)
+	gmcs $(OPT) -out:$(EXE) Main.cs $(SRC)
 
 library:
-	gmcs -unsafe -target:library -out:$(DLL) $(OPT) $(SRC)
+	gmcs $(OPT) -target:library -out:$(DLL) $(SRC)
