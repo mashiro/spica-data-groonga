@@ -81,7 +81,8 @@ namespace Spica.Data.Groonga
 
 		public void Send(String str, Int32 flags)
 		{
-			GroongaApi.grn_ctx_send(ref _context, str, (UInt32)str.Length, flags);
+			UInt32 length = (UInt32)Encoding.UTF8.GetByteCount(str);
+			GroongaApi.grn_ctx_send(ref _context, str, length, flags);
 			if (_context.rc != GroongaResultCode.Success)
 				throw new GroongaException(_context.rc, "failed: grn_ctx_send");
 		}
