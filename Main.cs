@@ -55,7 +55,8 @@ namespace Test
 				{
 					context.Send(input);
 					var recvData = context.Recv();
-					Console.WriteLine(recvData);
+					if (!String.IsNullOrEmpty(recvData))
+						Console.WriteLine(recvData);
 				}
 			}
 			catch (Exception ex)
