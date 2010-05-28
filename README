@@ -1,0 +1,6 @@
+.NET Framework 3.5 用の Groonga バインディングです。
+現状 Groonga が Windows に対応してないので Mono 専用。
+
+** ビルド方法
+make
+
