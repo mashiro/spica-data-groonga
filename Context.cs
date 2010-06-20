@@ -10,14 +10,15 @@ namespace Spica.Data.Groonga
 	{
 		public GroongaResultCode Result { get; private set; }
 
-		public GroongaException(GroongaResultCode result) 		{
-			Result = result; 
+		public GroongaException(GroongaResultCode result)
+		{
+			Result = result;
 		}
 
 		public GroongaException(GroongaResultCode result, String message)
-			: base(message) 
+			: base(message)
 		{
-			Result = result; 
+			Result = result;
 		}
 
 		public GroongaException(GroongaResultCode result, String message, Exception inner)
@@ -94,7 +95,8 @@ namespace Spica.Data.Groonga
 			UInt32 str_len;
 			Int32 flags;
 
-			do {
+			do
+			{
 				GroongaApi.grn_ctx_recv(ref _context, out str, out str_len, out flags);
 				if (_context.rc != GroongaResultCode.Success)
 					throw new GroongaException(_context.rc, "failed: grn_ctx_recv");
