@@ -54,7 +54,7 @@ namespace Test
 				foreach (var input in EnumerateInputs())
 				{
 					context.Send(input);
-					var recvData = context.Recv();
+					var recvData = context.Receive();
 					if (!String.IsNullOrEmpty(recvData))
 						Console.WriteLine(recvData);
 				}
