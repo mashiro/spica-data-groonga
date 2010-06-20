@@ -88,7 +88,7 @@ namespace Spica.Data.Groonga
 				throw new GroongaException(_context.rc, "failed: grn_ctx_send");
 		}
 
-		public String Recv()
+		public String Receive()
 		{
 			StringBuilder sb = new StringBuilder();
 			IntPtr str;
